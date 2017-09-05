@@ -1,17 +1,11 @@
 <template>
     <div class="chat-log">
-        <chat-message></chat-message>
-        <chat-message></chat-message>
-        <chat-message></chat-message>
+        <chat-message v-for="message in messages" :message="message"></chat-message>
     </div>
 </template>
 
 <script>
     export default {
-        data() {
-            return {
-
-            }
-        }
+        props: ['messages']
     }
 </script>
