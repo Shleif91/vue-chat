@@ -29,8 +29,7 @@
             this.socket = new WebSocket(ws_scheme + "://" + window.location.host + "/chat/");
 
             this.socket.onmessage = function(e) {
-                let data = JSON.parse(e.data);
-                console.log(data)
+                console.log(e.data)
             };
 
             this.socket.onopen = function() {
