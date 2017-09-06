@@ -17,6 +17,7 @@
         methods: {
             sendMessage() {
                 this.$emit('sendMessage', {
+                    id: Math.random() * (100000 - 3) + 3,
                     text: this.text,
                     user: 'Shleif'
                 });
