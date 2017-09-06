@@ -19,27 +19,37 @@
         data() {
             return {
                 messages: [],
-                username: 'Shleif'
+                username: 'Shleif',
+                socket: null
             }
         },
         created() {
-            this.messages = [
-                {
-                    id: 1,
-                    user: 'Shleif',
-                    text: 'test1'
-                },
-                {
-                    id: 2,
-                    user: 'Shleif',
-                    text: 'test2'
-                }
-            ]
+            const self = this;
+            let ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
+            this.socket = new WebSocket(ws_scheme + "://" + window.location.host + "/chat/");
+
+            this.socket.onmessage = function(e) {
+                let data = JSON.parse(e.data);
+                console.log(data)
+            };
+
+            this.socket.onopen = function() {
+                self.socket.send("connect");
+            };
+
+            this.socket.onclose = function() {
+                self.socket.send("disconnect");
+            };
+
+            if (this.socket.readyState === WebSocket.OPEN) {
+                this.socket.onopen();
+            }
         },
         methods: {
             addMessage(message) {
                 message.user = this.username;
                 this.messages.unshift(message);
+                this.socket.send(this.username)
             },
             logIn(username) {
                 this.username = username;
